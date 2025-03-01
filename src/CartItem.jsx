@@ -29,8 +29,11 @@ const CartItem = ({ onContinueShopping }) => {
     };
 
     const handleDecrement = (item) => {
-        dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+        const itemToUpdate = cart.find(cartItem => cartItem.name === item.name)
 
+        if (itemToUpdate && itemToUpdate.quantity > 1) {
+            dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+        }
     };
 
     const handleRemove = (item) => {
@@ -39,12 +42,12 @@ const CartItem = ({ onContinueShopping }) => {
 
     // Calculate total cost based on quantity for an item
     const calculateTotalCost = (item) => {
-        return item.quantity*parseFloat(item.cost.substring(1))
+        return item.quantity * parseFloat(item.cost.substring(1))
     };
 
     return (
         <div className="cart-container">
-            <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+            {cart.length == 0 ? <h2>No items added</h2> : <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>}
             <div>
                 {cart.map(item => (
                     <div className="cart-item" key={item.name}>
