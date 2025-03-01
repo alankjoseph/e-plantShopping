@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
-const CartItem = ({ onContinueShopping }) => {
+const CartItem = ({ onContinueShopping,setAddedToCart }) => {
     const cart = useSelector(state => state.cart.items);
     const dispatch = useDispatch();
 
@@ -37,7 +37,12 @@ const CartItem = ({ onContinueShopping }) => {
     };
 
     const handleRemove = (item) => {
+        
         dispatch(removeItem(item))
+        setAddedToCart((prevState) => ({
+            ...prevState,
+            [item.name]: false
+        }))
     };
 
     // Calculate total cost based on quantity for an item
